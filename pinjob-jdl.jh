@@ -1,0 +1,56 @@
+
+entity Announcement (announcements) {
+	title String maxlength(128) required,
+	body String maxlength(512) required,
+	date ZonedDateTime required required,
+    place String maxlength(1024),
+    price Integer,
+    bets Integer,
+    expiration ZonedDateTime,
+    picture String maxlength(256),
+    pictures String,
+    city String maxlength(256)
+}
+
+entity Review (reviews) {
+    text String maxlength(512) required
+}
+
+entity Rate (rates) {
+    value Integer min(1) max(5) required
+}
+
+entity City (cities) {
+	name String maxlength(128) required
+}
+
+entity Category (categories) {
+    name String maxlength(128) required
+}
+
+entity Status (statuses) {
+	name String maxlength(128) required
+}
+
+relationship  ManyToOne {
+	Announcement{user(login)} to User
+}
+
+relationship ManyToOne {
+	Review{author(login)} to User,
+    Review{recipient(login)} to User
+}
+
+relationship OneToOne {
+	Rate{user(login)} to User 
+}
+
+relationship ManyToOne {
+    Announcement{status(name)} to Status,
+    Announcement{category(name)} to Category
+}
+
+
+
+
+
