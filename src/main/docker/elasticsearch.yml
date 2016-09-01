@@ -1,0 +1,10 @@
+version: '2'
+services:
+    pinjob-elasticsearch:
+        container_name: pinjob-elasticsearch
+        image: elasticsearch:2.3.5
+        # volumes:
+        #     - ~/volumes/jhipster/pinjob/elasticsearch/:/usr/share/elasticsearch/data/
+        ports:
+            - 9200:9200
+            - 9300:9300
