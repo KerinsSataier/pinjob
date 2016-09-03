@@ -1,0 +1,20 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength",
+                "required"
+            ],
+            "fieldValidateRulesMaxlength": 128
+        }
+    ],
+    "changelogDate": "20160902090948",
+    "entityTableName": "statuses",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

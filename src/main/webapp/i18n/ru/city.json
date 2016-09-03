@@ -1,0 +1,22 @@
+{
+    "pinjobApp": {
+        "city" : {
+            "home": {
+                "title": "Cities",
+                "createLabel": "Создать новый City",
+                "createOrEditLabel": "Создать или отредактировать City",
+                "search": "Найти City"
+            },
+            "created": "Новый City создан с идентификатором {{ param }}",
+            "updated": "City обновлен с идентификатором {{ param }}",
+            "deleted": "City удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить City {{ id }}?"
+            },
+            "detail": {
+                "title": "City"
+            },
+            "name": "Name"
+        }
+    }
+}

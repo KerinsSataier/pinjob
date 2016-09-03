@@ -1,0 +1,71 @@
+
+<div>
+    <h2><span translate="pinjobApp.announcement.detail.title">Announcement</span> {{vm.announcement.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span translate="pinjobApp.announcement.title">Title</span></dt>
+        <dd>
+            <span>{{vm.announcement.title}}</span>
+        </dd>
+        <dt><span translate="pinjobApp.announcement.body">Body</span></dt>
+        <dd>
+            <span>{{vm.announcement.body}}</span>
+        </dd>
+        <dt><span translate="pinjobApp.announcement.date">Date</span></dt>
+        <dd>
+            <span>{{vm.announcement.date | date:'medium'}}</span>
+        </dd>
+        <dt><span translate="pinjobApp.announcement.place">Place</span></dt>
+        <dd>
+            <span>{{vm.announcement.place}}</span>
+        </dd>
+        <dt><span translate="pinjobApp.announcement.price">Price</span></dt>
+        <dd>
+            <span>{{vm.announcement.price}}</span>
+        </dd>
+        <dt><span translate="pinjobApp.announcement.bets">Bets</span></dt>
+        <dd>
+            <span>{{vm.announcement.bets}}</span>
+        </dd>
+        <dt><span translate="pinjobApp.announcement.expiration">Expiration</span></dt>
+        <dd>
+            <span>{{vm.announcement.expiration | date:'medium'}}</span>
+        </dd>
+        <dt><span translate="pinjobApp.announcement.picture">Picture</span></dt>
+        <dd>
+            <span>{{vm.announcement.picture}}</span>
+        </dd>
+        <dt><span translate="pinjobApp.announcement.pictures">Pictures</span></dt>
+        <dd>
+            <span>{{vm.announcement.pictures}}</span>
+        </dd>
+        <dt><span translate="pinjobApp.announcement.city">City</span></dt>
+        <dd>
+            <span>{{vm.announcement.city}}</span>
+        </dd>
+        <dt><span translate="pinjobApp.announcement.user">User</span></dt>
+        <dd>
+            {{vm.announcement.user.login}}
+        </dd>
+        <dt><span translate="pinjobApp.announcement.status">Status</span></dt>
+        <dd>
+            <a ui-sref="status-detail({id:vm.announcement.status.id})">{{vm.announcement.status.name}}</a>
+        </dd>
+        <dt><span translate="pinjobApp.announcement.category">Category</span></dt>
+        <dd>
+            <a ui-sref="category-detail({id:vm.announcement.category.id})">{{vm.announcement.category.name}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="announcement-detail.edit({id:vm.announcement.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-xs hidden-sm" translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

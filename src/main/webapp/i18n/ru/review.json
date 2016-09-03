@@ -1,0 +1,24 @@
+{
+    "pinjobApp": {
+        "review" : {
+            "home": {
+                "title": "Reviews",
+                "createLabel": "Создать новый Review",
+                "createOrEditLabel": "Создать или отредактировать Review",
+                "search": "Найти Review"
+            },
+            "created": "Новый Review создан с идентификатором {{ param }}",
+            "updated": "Review обновлен с идентификатором {{ param }}",
+            "deleted": "Review удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить Review {{ id }}?"
+            },
+            "detail": {
+                "title": "Review"
+            },
+            "text": "Text",
+            "author": "Author",
+            "recipient": "Recipient"
+        }
+    }
+}

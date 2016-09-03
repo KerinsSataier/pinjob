@@ -1,0 +1,103 @@
+<div>
+    <h2 translate="pinjobApp.announcement.home.title">Announcements</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="announcement.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="hidden-xs"  translate="pinjobApp.announcement.home.createLabel">
+                        Create new Announcement
+                    </span>
+                </button>
+            </div>
+            <div class="col-xs-8 no-padding-right">
+                <form name="searchForm" class="form-inline">
+                    <div class="input-group pull-right" >
+                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'pinjobApp.announcement.home.search' | translate }}">
+                        <span  class="input-group-btn width-min" >
+                            <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                        <span class="input-group-btn width-min" ng-if="vm.currentSearch">
+                            <button class="btn btn-info" ng-click="vm.clear()">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr>
+                    <th><span translate="global.field.id">ID</span></th>
+                    <th><span translate="pinjobApp.announcement.title">Title</span></th>
+                    <th><span translate="pinjobApp.announcement.body">Body</span></th>
+                    <th><span translate="pinjobApp.announcement.date">Date</span></th>
+                    <th><span translate="pinjobApp.announcement.place">Place</span></th>
+                    <th><span translate="pinjobApp.announcement.price">Price</span></th>
+                    <th><span translate="pinjobApp.announcement.bets">Bets</span></th>
+                    <th><span translate="pinjobApp.announcement.expiration">Expiration</span></th>
+                    <th><span translate="pinjobApp.announcement.picture">Picture</span></th>
+                    <th><span translate="pinjobApp.announcement.pictures">Pictures</span></th>
+                    <th><span translate="pinjobApp.announcement.city">City</span></th>
+                    <th><span translate="pinjobApp.announcement.user">User</span></th>
+                    <th><span translate="pinjobApp.announcement.status">Status</span></th>
+                    <th><span translate="pinjobApp.announcement.category">Category</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="announcement in vm.announcements track by announcement.id">
+                    <td><a ui-sref="announcement-detail({id:announcement.id})">{{announcement.id}}</a></td>
+                    <td>{{announcement.title}}</td>
+                    <td>{{announcement.body}}</td>
+                    <td>{{announcement.date | date:'medium'}}</td>
+                    <td>{{announcement.place}}</td>
+                    <td>{{announcement.price}}</td>
+                    <td>{{announcement.bets}}</td>
+                    <td>{{announcement.expiration | date:'medium'}}</td>
+                    <td>{{announcement.picture}}</td>
+                    <td>{{announcement.pictures}}</td>
+                    <td>{{announcement.city}}</td>
+                    <td>
+                        {{announcement.user.login}}
+                    </td>
+                    <td>
+                        <a ui-sref="status-detail({id:announcement.status.id})">{{announcement.status.name}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="category-detail({id:announcement.category.id})">{{announcement.category.name}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="announcement-detail({id:announcement.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm" translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="announcement.edit({id:announcement.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="announcement.delete({id:announcement.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

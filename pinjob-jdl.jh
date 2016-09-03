@@ -41,7 +41,7 @@ relationship ManyToOne {
     Review{recipient(login)} to User
 }
 
-relationship OneToOne {
+relationship ManyToOne {
 	Rate{user(login)} to User 
 }
 

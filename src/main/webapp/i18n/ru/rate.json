@@ -1,0 +1,23 @@
+{
+    "pinjobApp": {
+        "rate" : {
+            "home": {
+                "title": "Rates",
+                "createLabel": "Создать новый Rate",
+                "createOrEditLabel": "Создать или отредактировать Rate",
+                "search": "Найти Rate"
+            },
+            "created": "Новый Rate создан с идентификатором {{ param }}",
+            "updated": "Rate обновлен с идентификатором {{ param }}",
+            "deleted": "Rate удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить Rate {{ id }}?"
+            },
+            "detail": {
+                "title": "Rate"
+            },
+            "value": "Value",
+            "user": "User"
+        }
+    }
+}

@@ -1,0 +1,29 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "login"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "value",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max",
+                "required"
+            ],
+            "fieldValidateRulesMin": 1,
+            "fieldValidateRulesMax": 5
+        }
+    ],
+    "changelogDate": "20160902090945",
+    "entityTableName": "rates",
+    "dto": "no",
+    "pagination": "no",
+    "service": "no"
+}

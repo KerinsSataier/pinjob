@@ -1,0 +1,34 @@
+{
+    "pinjobApp": {
+        "announcement" : {
+            "home": {
+                "title": "Announcements",
+                "createLabel": "Create a new Announcement",
+                "createOrEditLabel": "Create or edit a Announcement",
+                "search": "Search for Announcement"
+            },
+            "created": "A new Announcement is created with identifier {{ param }}",
+            "updated": "A Announcement is updated with identifier {{ param }}",
+            "deleted": "A Announcement is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Announcement {{ id }}?"
+            },
+            "detail": {
+                "title": "Announcement"
+            },
+            "title": "Title",
+            "body": "Body",
+            "date": "Date",
+            "place": "Place",
+            "price": "Price",
+            "bets": "Bets",
+            "expiration": "Expiration",
+            "picture": "Picture",
+            "pictures": "Pictures",
+            "city": "City",
+            "user": "User",
+            "status": "Status",
+            "category": "Category"
+        }
+    }
+}
