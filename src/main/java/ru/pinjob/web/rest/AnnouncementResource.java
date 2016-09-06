@@ -4,10 +4,15 @@ import com.codahale.metrics.annotation.Timed;
 import ru.pinjob.domain.Announcement;
 
 import ru.pinjob.repository.AnnouncementRepository;
+import ru.pinjob.repository.UserRepository;
 import ru.pinjob.repository.search.AnnouncementSearchRepository;
+import ru.pinjob.security.SecurityUtils;
 import ru.pinjob.web.rest.util.HeaderUtil;
+import ru.pinjob.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,12 +38,15 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class AnnouncementResource {
 
     private final Logger log = LoggerFactory.getLogger(AnnouncementResource.class);
-        
+
     @Inject
     private AnnouncementRepository announcementRepository;
 
     @Inject
     private AnnouncementSearchRepository announcementSearchRepository;
+
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * POST  /announcements : Create a new announcement.
@@ -51,11 +59,13 @@ public class AnnouncementResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Announcement> createAnnouncement(@Valid @RequestBody Announcement announcement) throws URISyntaxException {
+    public ResponseEntity<Announcement> createAnnouncement(@RequestBody Announcement announcement) throws URISyntaxException {
         log.debug("REST request to save Announcement : {}", announcement);
         if (announcement.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("announcement", "idexists", "A new announcement cannot already have an ID")).body(null);
         }
+
+        announcement.setUser(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get());
         Announcement result = announcementRepository.save(announcement);
         announcementSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/announcements/" + result.getId()))
@@ -91,16 +101,20 @@ public class AnnouncementResource {
     /**
      * GET  /announcements : get all the announcements.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of announcements in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @RequestMapping(value = "/announcements",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Announcement> getAllAnnouncements() {
-        log.debug("REST request to get all Announcements");
-        List<Announcement> announcements = announcementRepository.findAll();
-        return announcements;
+    public ResponseEntity<List<Announcement>> getAllAnnouncements(Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Announcements");
+        Page<Announcement> page = announcementRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/announcements");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -144,18 +158,21 @@ public class AnnouncementResource {
      * SEARCH  /_search/announcements?query=:query : search for the announcement corresponding
      * to the query.
      *
-     * @param query the query of the announcement search 
+     * @param query the query of the announcement search
+     * @param pageable the pagination information
      * @return the result of the search
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @RequestMapping(value = "/_search/announcements",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Announcement> searchAnnouncements(@RequestParam String query) {
-        log.debug("REST request to search Announcements for query {}", query);
-        return StreamSupport
-            .stream(announcementSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<Announcement>> searchAnnouncements(@RequestParam String query, Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to search for a page of Announcements for query {}", query);
+        Page<Announcement> page = announcementSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/announcements");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 

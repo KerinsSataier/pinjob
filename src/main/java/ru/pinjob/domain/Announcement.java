@@ -37,7 +37,7 @@ public class Announcement implements Serializable {
 
     @NotNull
     @Column(name = "date", nullable = false)
-    private ZonedDateTime date;
+    private ZonedDateTime date = ZonedDateTime.now();
 
     @Size(max = 1024)
     @Column(name = "place", length = 1024)

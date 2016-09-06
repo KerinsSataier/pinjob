@@ -4,10 +4,15 @@ import com.codahale.metrics.annotation.Timed;
 import ru.pinjob.domain.Review;
 
 import ru.pinjob.repository.ReviewRepository;
+import ru.pinjob.repository.UserRepository;
 import ru.pinjob.repository.search.ReviewSearchRepository;
+import ru.pinjob.security.SecurityUtils;
 import ru.pinjob.web.rest.util.HeaderUtil;
+import ru.pinjob.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,12 +38,15 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class ReviewResource {
 
     private final Logger log = LoggerFactory.getLogger(ReviewResource.class);
-        
+
     @Inject
     private ReviewRepository reviewRepository;
 
     @Inject
     private ReviewSearchRepository reviewSearchRepository;
+
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * POST  /reviews : Create a new review.
@@ -51,11 +59,13 @@ public class ReviewResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Review> createReview(@Valid @RequestBody Review review) throws URISyntaxException {
+    public ResponseEntity<Review> createReview(@RequestBody Review review) throws URISyntaxException {
         log.debug("REST request to save Review : {}", review);
         if (review.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("review", "idexists", "A new review cannot already have an ID")).body(null);
         }
+
+        review.setAuthor(userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get());
         Review result = reviewRepository.save(review);
         reviewSearchRepository.save(result);
         return ResponseEntity.created(new URI("/api/reviews/" + result.getId()))
@@ -91,16 +101,20 @@ public class ReviewResource {
     /**
      * GET  /reviews : get all the reviews.
      *
+     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of reviews in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @RequestMapping(value = "/reviews",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Review> getAllReviews() {
-        log.debug("REST request to get all Reviews");
-        List<Review> reviews = reviewRepository.findAll();
-        return reviews;
+    public ResponseEntity<List<Review>> getAllReviews(Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Reviews");
+        Page<Review> page = reviewRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/reviews");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -144,18 +158,21 @@ public class ReviewResource {
      * SEARCH  /_search/reviews?query=:query : search for the review corresponding
      * to the query.
      *
-     * @param query the query of the review search 
+     * @param query the query of the review search
+     * @param pageable the pagination information
      * @return the result of the search
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @RequestMapping(value = "/_search/reviews",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Review> searchReviews(@RequestParam String query) {
-        log.debug("REST request to search Reviews for query {}", query);
-        return StreamSupport
-            .stream(reviewSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<Review>> searchReviews(@RequestParam String query, Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to search for a page of Reviews for query {}", query);
+        Page<Review> page = reviewSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/reviews");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
 

@@ -30,6 +30,7 @@ public class Rate implements Serializable {
     @Column(name = "value", nullable = false)
     private Integer value;
 
+    @NotNull
     @ManyToOne
     private User user;
 

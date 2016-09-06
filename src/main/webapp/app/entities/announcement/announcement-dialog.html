@@ -46,26 +46,6 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" translate="pinjobApp.announcement.date" for="field_date">Date</label>
-                <div class="input-group">
-                    <input id="field_date" type="text" class="form-control" name="date" datetime-picker="{{dateformat}}" ng-model="vm.announcement.date" is-open="vm.datePickerOpenStatus.date"
-                    required  />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar('date')"><i class="glyphicon glyphicon-calendar"></i></button>
-                    </span>
-                </div>
-            <div ng-show="editForm.date.$invalid">
-                <p class="help-block"
-                    ng-show="editForm.date.$error.required" translate="entity.validation.required">
-                    This field is required.
-                </p>
-                <p class="help-block"
-                    ng-show="editForm.date.$error.ZonedDateTimelocal" translate="entity.validation.ZonedDateTimelocal">
-                    This field should be a date and time.
-                </p>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="control-label" translate="pinjobApp.announcement.place" for="field_place">Place</label>
             <input type="text" class="form-control" name="place" id="field_place"
                     ng-model="vm.announcement.place"
@@ -128,13 +108,6 @@
                     This field cannot be longer than 256 characters.
                 </p>
             </div>
-        </div>
-
-        <div class="form-group">
-            <label translate="pinjobApp.announcement.user" for="field_user">User</label>
-            <select class="form-control" id="field_user" name="user" ng-model="vm.announcement.user" ng-options="user as user.login for user in vm.users track by user.id">
-                <option value=""></option>
-            </select>
         </div>
         <div class="form-group">
             <label translate="pinjobApp.announcement.status" for="field_status">Status</label>

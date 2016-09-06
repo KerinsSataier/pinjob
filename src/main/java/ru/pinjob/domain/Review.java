@@ -7,6 +7,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -34,6 +35,10 @@ public class Review implements Serializable {
 
     @ManyToOne
     private User recipient;
+
+    @NotNull
+    @Column(name = "date", nullable = false)
+    private ZonedDateTime date = ZonedDateTime.now();
 
     public Long getId() {
         return id;
@@ -80,6 +85,14 @@ public class Review implements Serializable {
 
     public void setRecipient(User user) {
         this.recipient = user;
+    }
+
+    public ZonedDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(ZonedDateTime date) {
+        this.date = date;
     }
 
     @Override

@@ -34,21 +34,21 @@
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
-                <tr>
-                    <th><span translate="global.field.id">ID</span></th>
-                    <th><span translate="pinjobApp.announcement.title">Title</span></th>
-                    <th><span translate="pinjobApp.announcement.body">Body</span></th>
-                    <th><span translate="pinjobApp.announcement.date">Date</span></th>
-                    <th><span translate="pinjobApp.announcement.place">Place</span></th>
-                    <th><span translate="pinjobApp.announcement.price">Price</span></th>
-                    <th><span translate="pinjobApp.announcement.bets">Bets</span></th>
-                    <th><span translate="pinjobApp.announcement.expiration">Expiration</span></th>
-                    <th><span translate="pinjobApp.announcement.picture">Picture</span></th>
-                    <th><span translate="pinjobApp.announcement.pictures">Pictures</span></th>
-                    <th><span translate="pinjobApp.announcement.city">City</span></th>
-                    <th><span translate="pinjobApp.announcement.user">User</span></th>
-                    <th><span translate="pinjobApp.announcement.status">Status</span></th>
-                    <th><span translate="pinjobApp.announcement.category">Category</span></th>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="title"><span translate="pinjobApp.announcement.title">Title</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="body"><span translate="pinjobApp.announcement.body">Body</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="date"><span translate="pinjobApp.announcement.date">Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="place"><span translate="pinjobApp.announcement.place">Place</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="price"><span translate="pinjobApp.announcement.price">Price</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="bets"><span translate="pinjobApp.announcement.bets">Bets</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="expiration"><span translate="pinjobApp.announcement.expiration">Expiration</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="picture"><span translate="pinjobApp.announcement.picture">Picture</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="pictures"><span translate="pinjobApp.announcement.pictures">Pictures</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="city"><span translate="pinjobApp.announcement.city">City</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="user.login"><span translate="pinjobApp.announcement.user">User</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="status.name"><span translate="pinjobApp.announcement.status">Status</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="category.name"><span translate="pinjobApp.announcement.category">Category</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -99,5 +99,9 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
     </div>
 </div>

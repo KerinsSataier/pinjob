@@ -90,6 +90,6 @@
     "changelogDate": "20160902090943",
     "entityTableName": "announcements",
     "dto": "no",
-    "pagination": "no",
+    "pagination": "pagination",
     "service": "no"
 }
