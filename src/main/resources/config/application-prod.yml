@@ -22,7 +22,7 @@ spring:
         url: jdbc:postgresql://localhost:5432/pinjob
         name:
         username: pinjob
-        password:
+        password: pinjob
     jpa:
         database-platform: ru.pinjob.domain.util.FixedPostgreSQL82Dialect
         database: POSTGRESQL
