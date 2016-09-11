@@ -126,7 +126,6 @@
                             return {
                                 title: null,
                                 body: null,
-                                date: null,
                                 place: null,
                                 price: null,
                                 bets: null,

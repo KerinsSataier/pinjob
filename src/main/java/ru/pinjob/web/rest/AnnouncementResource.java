@@ -1,10 +1,13 @@
 package ru.pinjob.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PageableDefault;
 import ru.pinjob.domain.Announcement;
 
 import ru.pinjob.repository.AnnouncementRepository;
 import ru.pinjob.repository.UserRepository;
+import ru.pinjob.domain.projections.SimplifiedAnnouncement;
 import ru.pinjob.repository.search.AnnouncementSearchRepository;
 import ru.pinjob.security.SecurityUtils;
 import ru.pinjob.web.rest.util.HeaderUtil;
@@ -25,8 +28,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -109,10 +110,24 @@ public class AnnouncementResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<Announcement>> getAllAnnouncements(Pageable pageable)
+    public ResponseEntity<List<Announcement>> getAllAnnouncements(@PageableDefault(size = 50) Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Announcements");
         Page<Announcement> page = announcementRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/announcements");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/announcements",
+        method = RequestMethod.GET,
+        params = "places",
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<SimplifiedAnnouncement>> getAllAnnouncements()
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Announcements");
+        Page<SimplifiedAnnouncement> page = announcementRepository.getAllSimplifiedAnnouncements(new PageRequest(0, 100000));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/announcements");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
