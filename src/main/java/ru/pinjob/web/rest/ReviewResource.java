@@ -1,6 +1,7 @@
 package ru.pinjob.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import org.springframework.security.access.prepost.PreAuthorize;
 import ru.pinjob.domain.Review;
 
 import ru.pinjob.repository.ReviewRepository;
@@ -86,6 +87,7 @@ public class ReviewResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @PreAuthorize("@announcementRepository.findOne(#announcement.id).user.login==principal.username")
     public ResponseEntity<Review> updateReview(@Valid @RequestBody Review review) throws URISyntaxException {
         log.debug("REST request to update Review : {}", review);
         if (review.getId() == null) {
@@ -147,6 +149,7 @@ public class ReviewResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @PreAuthorize("@announcementRepository.findOne(#announcement.id).user.login==principal.username")
     public ResponseEntity<Void> deleteReview(@PathVariable Long id) {
         log.debug("REST request to delete Review : {}", id);
         reviewRepository.delete(id);

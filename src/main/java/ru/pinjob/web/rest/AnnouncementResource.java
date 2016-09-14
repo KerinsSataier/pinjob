@@ -3,6 +3,7 @@ package ru.pinjob.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import ru.pinjob.domain.Announcement;
 
 import ru.pinjob.repository.AnnouncementRepository;
@@ -87,6 +88,7 @@ public class AnnouncementResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @PreAuthorize("@announcementRepository.findOne(#announcement.id).user.login==principal.username")
     public ResponseEntity<Announcement> updateAnnouncement(@Valid @RequestBody Announcement announcement) throws URISyntaxException {
         log.debug("REST request to update Announcement : {}", announcement);
         if (announcement.getId() == null) {
@@ -162,12 +164,15 @@ public class AnnouncementResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @PreAuthorize("@announcementRepository.findOne(#announcement.id).user.login==principal.username")
     public ResponseEntity<Void> deleteAnnouncement(@PathVariable Long id) {
         log.debug("REST request to delete Announcement : {}", id);
         announcementRepository.delete(id);
         announcementSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("announcement", id.toString())).build();
     }
+
+//    public  String upload()
 
     /**
      * SEARCH  /_search/announcements?query=:query : search for the announcement corresponding
