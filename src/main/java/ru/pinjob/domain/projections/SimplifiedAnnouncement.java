@@ -1,5 +1,7 @@
 package ru.pinjob.domain.projections;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public interface SimplifiedAnnouncement{
 
     Long getId();
@@ -9,4 +11,7 @@ public interface SimplifiedAnnouncement{
     Integer getPrice();
 
     String getPlace();
+
+    @JsonIgnore
+    Class<?> getDecoratedClass();
 }
