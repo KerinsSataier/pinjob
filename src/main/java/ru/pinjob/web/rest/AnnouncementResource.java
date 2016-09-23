@@ -6,9 +6,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import ru.pinjob.domain.Announcement;
 
+import ru.pinjob.domain.projections.SimplifiedAnnouncement;
 import ru.pinjob.repository.AnnouncementRepository;
 import ru.pinjob.repository.UserRepository;
-import ru.pinjob.domain.projections.SimplifiedAnnouncement;
 import ru.pinjob.repository.search.AnnouncementSearchRepository;
 import ru.pinjob.security.SecurityUtils;
 import ru.pinjob.web.rest.util.HeaderUtil;
@@ -171,8 +171,6 @@ public class AnnouncementResource {
         announcementSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("announcement", id.toString())).build();
     }
-
-//    public  String upload()
 
     /**
      * SEARCH  /_search/announcements?query=:query : search for the announcement corresponding
